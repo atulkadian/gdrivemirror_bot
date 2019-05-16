@@ -1,3 +1,4 @@
+ffmpeg-python==0.1.17
 future==0.17.1
 google-api-python-client==1.7.7
 google-auth==1.6.2
@@ -8,8 +9,9 @@ oauthlib==1.0.3
 python-telegram-bot==11.1.0
 pytube==9.4.0
 requests==2.9.1
+selenium==3.141.0
 uritemplate==3.0.0
 urllib3==1.23
 validators==0.12.4
 wget==3.2
-youtube-dl==2019.4.1
+youtube-dl==2019.5.11

@@ -1,0 +1,6 @@
+*.pyc
+.vscode
+*.save
+private/
+auth_token.txt
+modules/credentials.py

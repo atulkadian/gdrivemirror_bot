@@ -22,3 +22,4 @@ class Text(object):
 	OLD_USER = "User already exists."
 	ADDED_USER = "New user added successfully to the database."
 	REVOKED_USER = "User successfully revoked from database."
+	ISNOT_DOWNLOADABLE = "Please check your link again. The link does not contain any file or redirects to a webpage."

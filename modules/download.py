@@ -10,6 +10,17 @@ import re
 import urllib2
 import wget
 import os.path
+
+def is_downloadable(url):
+	h = requests.head(url, allow_redirects=True)
+	header = h.headers
+	content_type = header.get('content-type')
+	if 'text' in content_type.lower():
+		return False
+	if 'html' in content_type.lower():
+		return False
+	return True
+
 def download(url, filename):
 	try:
 		"""result = urllib2.urlopen(url)
@@ -21,9 +32,9 @@ def download(url, filename):
 		downloader.subscribe(callback, callback_threshold)
 		downloader.wait_for_finish()"""
 		if filename:
-			cmd_output = subprocess.check_output('wget -O {} {}'.format(filename, url), stderr=subprocess.STDOUT, shell=True)
+			cmd_output = subprocess.check_output("wget -O '{}' '{}'".format(filename, url), stderr=subprocess.STDOUT, shell=True)
 		else:
-			cmd_output = subprocess.check_output('wget {}'.format(url), stderr=subprocess.STDOUT, shell=True)
+			cmd_output = subprocess.check_output("wget '{}'".format(url), stderr=subprocess.STDOUT, shell=True)
 		raw_filename = re.findall(r' - ‘(.*?)’ saved', cmd_output)
 		filename = str(raw_filename[0])
       	except Exception as e:

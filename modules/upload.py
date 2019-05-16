@@ -60,7 +60,6 @@ def upload(filename):
 	def authorize(token_file, storage):
 		if storage is None:
 			storage = Storage(token_file)
-		print(type(storage))
 		credentials = storage.get()
 		http = httplib2.Http()
 		credentials.refresh(http)
@@ -132,9 +131,7 @@ def shorten(dwnld_url):
 	api_url = "https://api.shorte.st/s/"+api_token+"/"+URL
 	r = requests.get(api_url)
 	data = r.json()
-	print("JSON DATA", data)
 	shortened_url = data.get('shortenedUrl')
-	print("FINAL URL = "+shortened_url)
 	return shortened_url
 
 

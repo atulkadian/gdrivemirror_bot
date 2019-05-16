@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) 2019 Atul-Kadian
 
-import time
 import requests
 import subprocess
 import os
@@ -11,8 +10,6 @@ import re
 import urllib2
 import wget
 import os.path
-from os import path
-#from pget.down import Downloader
 def download(url, filename):
 	try:
 		"""result = urllib2.urlopen(url)

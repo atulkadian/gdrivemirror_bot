@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Copyright (C) 2019 Atul-Kadian
-import sys
-#reload(sys)
-#sys.setdefaultencoding('utf8')
 import time
 import requests
 import subprocess
@@ -32,8 +29,6 @@ from oauth2client.file import Storage
 from oauth2client import file, client, tools
 import httplib2
 import validators
-#from modules import *
-#from mutagen.mp3 import MP3
 import modules.download as download
 import modules.download_audio as download_audio
 import modules.download_video as download_video
@@ -124,7 +119,6 @@ def start_bot(bot, update):
 				if "ERROR" in raw_file:
 					sent_message.edit_text(Text.FAILED+raw_file, parse_mode=telegram.ParseMode.HTML)
 				else:
-					#os.rename(raw_file, filename)
 					bot.send_chat_action(chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING)
 					sent_message.edit_text(Text.UPLOADING_GD)
 					dwnld_url = upload.upload(raw_file)
@@ -147,7 +141,7 @@ def start_bot(bot, update):
 		bot.send_message(chat_id=update.message.chat_id, text=Text.RETARD)
 
 def main():
-	updater = Updater(token=TOKEN, workers = 5)
+	updater = Updater(token=TOKEN, workers = 8)
 	dispatcher = updater.dispatcher
 	start_cmd = CommandHandler("start" , start)
 	help_cmd = CommandHandler("help" , help)

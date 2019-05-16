@@ -21,23 +21,6 @@ def download(url):
 	def my_hook(d):
 	    if d['status'] == 'finished':
 	        print('Done downloading')
-	"""if ('youtube' in url or 'youtu' in url):
-		yt = YouTube(url)
-		stream = yt.streams.filter(file_extension='mp4',progressive=True).all()
-		print(stream)
-		video_title = yt.title
-		filename = str(video_title)
-		filename = re.sub('[(){}<>-]', '', filename)
-	        filename = re.sub(r'\[\[(?:[^|\]]*\|)?([^\]]*)]]', r'\1', filename)
-		filename = filename.replace("|", "")
-		filename = filename.replace(":", "")
-		filename = filename.replace(" ","-")
-		filename = filename.strip()
-		filename = filename+".mp4"
-		filename = filename.strip()
-		stream[0].download()
-		print('FILENAME : ', filename)
-		#os.rename(video_title, filename)"""
 	extract_filename = {}
 	with youtube_dl.YoutubeDL(extract_filename) as ydl:
 		info_dict = ydl.extract_info(url, download=False)
@@ -50,7 +33,6 @@ def download(url):
                 filename = re.sub(r'\[\[(?:[^|\]]*\|)?([^\]]*)]]', r'\1', filename)
 		filename = filename.replace("|", "")
 		filename = filename.strip()
-		#if("youtube" in url or "youtube" in url):
 		filename = filename+"."+video_extension
 
 	if("youtube" in url or "youtube" in url):

@@ -8,6 +8,7 @@ import os
 import logging
 import re
 import httplib
+import httplib2
 import urllib2
 import json
 import html
@@ -20,14 +21,6 @@ from telegram.ext import MessageHandler
 from telegram.ext import Filters
 from telegram.ext import CommandHandler
 from telegram import ChatAction
-from mimetypes import guess_type
-from apiclient.discovery import build
-from apiclient.http import MediaFileUpload
-from apiclient.errors import ResumableUploadError
-from oauth2client.client import OAuth2WebServerFlow
-from oauth2client.file import Storage
-from oauth2client import file, client, tools
-import httplib2
 import validators
 import modules.download as download
 import modules.download_audio as download_audio
@@ -83,8 +76,9 @@ def start_bot(bot, update):
 	#site = httplib.HTTPConnection(url)
 	#site.request("HEAD", '')
 	#if site.getresponse().status == 200:
-	if validators.url(url) or download.is_downloadable(url):
-		sent_message = bot.send_message(chat_id=update.message.chat_id, text=Text.PROCESSING)
+	sent_message = bot.send_message(chat_id=update.message.chat_id, text=Text.VALIDATING_URL)
+	if validators.url(url):
+		sent_message.edit_text(Text.PROCESSING)
 		if user_cmd:
 			if(user_cmd == "video"):
 				filename = download_video.download(url)

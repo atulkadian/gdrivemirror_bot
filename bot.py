@@ -76,7 +76,8 @@ def start_bot(bot, update):
 	#site = httplib.HTTPConnection(url)
 	#site.request("HEAD", '')
 	#if site.getresponse().status == 200:
-	sent_message = bot.send_message(chat_id=update.message.chat_id, text=Text.VALIDATING_URL)
+	sent_message = bot.send_message(chat_id=update.message.chat_id, text=Text.VERIFYING_URL)
+	time.sleep(1)
 	if validators.url(url):
 		sent_message.edit_text(Text.PROCESSING)
 		if user_cmd:
@@ -109,36 +110,42 @@ def start_bot(bot, update):
 					sent_message.edit_text(Text.NOT_SUPPORTED,parse_mode=telegram.ParseMode.HTML)
 			else:
 				if download.is_downloadable(url):
-					filename = user_cmd
-					raw_file = download.download(url, filename)
-					if "ERROR" in raw_file:
-						sent_message.edit_text(Text.FAILED+raw_file, parse_mode=telegram.ParseMode.HTML)
+					size = download.check_filesize(url)
+					if size <= 5000:
+						filename = user_cmd
+						raw_file = download.download(url, filename)
+						if "ERROR" in raw_file:
+							sent_message.edit_text(Text.FAILED+raw_file, parse_mode=telegram.ParseMode.HTML)
+						else:
+							bot.send_chat_action(chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING)
+							sent_message.edit_text(Text.UPLOADING_GD)
+							dwnld_url = upload.upload(raw_file)
+							short_link = upload.shorten(dwnld_url)
+							sent_message.edit_text(Text.DONE.format(raw_file, size, short_link),parse_mode=telegram.ParseMode.HTML)
+							os.remove(raw_file)
 					else:
-						bot.send_chat_action(chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING)
-						sent_message.edit_text(Text.UPLOADING_GD)
-						dwnld_url = upload.upload(raw_file)
-						size = (os.path.getsize(raw_file))/1048576
-						short_link = upload.shorten(dwnld_url)
-						sent_message.edit_text(Text.DONE.format(raw_file, size, short_link),parse_mode=telegram.ParseMode.HTML)
-						os.remove(raw_file)
+						sent_message.edit_text(Text.MAXLIMITEXCEEDED)
 				else:
 					sent_message.edit_text(Text.ISNOT_DOWNLOADABLE,parse_mode=telegram.ParseMode.HTML)
 		else:
 			if download.is_downloadable(url):
-				raw_file = download.download(url, None)
-				bot.send_chat_action(chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING)
-				sent_message.edit_text(Text.UPLOADING_GD)
-				dwnld_url = upload.upload(raw_file)
-				size = (os.path.getsize(raw_file))/1048576
-				short_link = upload.shorten(dwnld_url)
-				sent_message.edit_text(Text.DONE.format(raw_file, size, short_link),parse_mode=telegram.ParseMode.HTML)
-		 		os.remove(raw_file)
+				size = download.check_filesize(url)/1048576
+				if size <= 5000:
+					raw_file = download.download(url, None)
+					bot.send_chat_action(chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING)
+					sent_message.edit_text(Text.UPLOADING_GD)
+					dwnld_url = upload.upload(raw_file)
+					short_link = upload.shorten(dwnld_url)
+					sent_message.edit_text(Text.DONE.format(raw_file, size, short_link),parse_mode=telegram.ParseMode.HTML)
+			 		os.remove(raw_file)
+				else:
+					sent_message.edit_text(Text.MAXLIMITEXCEEDED)
 			else:
 				sent_message.edit_text(Text.ISNOT_DOWNLOADABLE,parse_mode=telegram.ParseMode.HTML)
 	elif("help" not in url and "start" not in url and "broadcast" not in url and "donate" not in url and "add_user" not in url and "revoke_user" not in url):
 		bot.send_chat_action(chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING)
 		time.sleep(1)
-		bot.send_message(chat_id=update.message.chat_id, text=Text.RETARD)
+		sent_message.edit_text(Text.RETARD)
 
 def main():
 	updater = Updater(token=TOKEN, workers = 8)

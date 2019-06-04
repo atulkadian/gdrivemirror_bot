@@ -11,6 +11,12 @@ import urllib2
 import wget
 import os.path
 
+def check_filesize(url):
+	cmd_output = subprocess.check_output("wget --spider '{}'".format(url), stderr=subprocess.STDOUT, shell=True)
+	filesize = re.findall(r'Length: (.*?) \(', cmd_output)
+	filesize = int(filesize[0])
+	return filesize
+
 def is_downloadable(url):
 	h = requests.head(url, allow_redirects=True)
 	header = h.headers

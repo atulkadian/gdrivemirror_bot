@@ -111,7 +111,7 @@ def start_bot(bot, update):
 			else:
 				if download.is_downloadable(url):
 					size = download.check_filesize(url)
-					if size <= 5000:
+					if size <= 10000:
 						filename = user_cmd
 						raw_file = download.download(url, filename)
 						if "ERROR" in raw_file:
@@ -130,7 +130,7 @@ def start_bot(bot, update):
 		else:
 			if download.is_downloadable(url):
 				size = download.check_filesize(url)/1048576
-				if size <= 5000:
+				if size <= 10000:
 					raw_file = download.download(url, None)
 					bot.send_chat_action(chat_id=update.message.chat_id, action=telegram.ChatAction.TYPING)
 					sent_message.edit_text(Text.UPLOADING_GD)

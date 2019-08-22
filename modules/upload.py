@@ -125,15 +125,4 @@ def upload(filename):
 
 
 
-def shorten(dwnld_url):
-	URL = dwnld_url
-	api_token = Creds.SHORTNER_API_TOKEN
-	api_url = "https://api.shorte.st/s/"+api_token+"/"+URL
-	r = requests.get(api_url)
-	data = r.json()
-	shortened_url = data.get('shortenedUrl')
-	return shortened_url
-
-
-
 

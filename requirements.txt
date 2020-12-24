@@ -14,4 +14,4 @@ uritemplate==3.0.0
 urllib3==1.24.2
 validators==0.12.6
 wget==3.2
-youtube-dl==2020.12.22
+youtube-dl==2019.6.8
